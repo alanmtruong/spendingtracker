@@ -17,15 +17,20 @@ var app = new function(){
                 data+='<td><button onclick="app.Delete('+i+')"class="btn btn-danger">Delete</button></td>';
                 data+='</tr>'
             }
-            
             // Tracks total for expenses entered into table
             for(i=0;i<this.expenses.length;i++){
                 sum+=parseFloat(this.costs[i]);
             }
-
-            this.Count(this.expenses.length, sum.toFixed(2));
-            return this.el.innerHTML = data;
         }
+        else{
+            data+='<tr>';
+            data+='</tr>';
+
+            //Update Counter outside function
+            document.getElementById('counter').innerHTML = 0 + ' Expenses' +' totaling $0.00';
+        }
+        this.Count(this.expenses.length, sum.toFixed(2));
+        return this.el.innerHTML = data;
     };
 
     // ADD
@@ -36,7 +41,8 @@ var app = new function(){
         var cost = el2.value;
         if(expense){
             this.expenses.push(expense.trim());
-            this.costs.push(cost.trim());
+            float_cost = parseFloat(cost);
+            this.costs.push(float_cost.toFixed(2));
             el.value='';
             el2.value='';
             this.FetchAll();
@@ -72,6 +78,7 @@ var app = new function(){
         this.FetchAll();
     };
 
+    // COUNT
     this.Count = function(data, total){
         var el = document.getElementById('counter');
         var name = 'Expenses';
